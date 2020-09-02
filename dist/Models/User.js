@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var userSchema = new mongoose_1.Schema({
-    username: String,
+    username: {
+        type: String,
+        default: "",
+    },
     email: {
         type: String,
         required: true,
@@ -11,7 +14,10 @@ var userSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    profileImage: String,
+    profileImage: {
+        type: String,
+        default: "",
+    },
     needs: [
         {
             type: mongoose_1.Schema.Types.ObjectId,

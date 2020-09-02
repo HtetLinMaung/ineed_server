@@ -39,13 +39,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signup = void 0;
+exports.login = exports.editProfile = exports.signup = void 0;
 var express_validator_1 = require("express-validator");
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var User_1 = __importDefault(require("../models/User"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var User_1 = __importDefault(require("../models/User"));
+var utils_1 = require("../utils");
 exports.signup = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var errors, error, hashedPassword, userDto, user, result, token, err_1;
+    var errors, error, hashedPassword, userDto, user, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -67,11 +68,11 @@ exports.signup = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 user = new User_1.default(userDto);
                 return [4 /*yield*/, user.save()];
             case 2:
-                result = _a.sent();
+                _a.sent();
                 token = jsonwebtoken_1.default.sign({ userId: user._id }, process.env.SECRET || "secret", {
                     expiresIn: "1d",
                 });
-                res.json({ message: "User created successfully", data: result, token: token });
+                res.json({ message: "User created successfully", token: token });
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
@@ -84,24 +85,106 @@ exports.signup = function (req, res, next) { return __awaiter(void 0, void 0, vo
         }
     });
 }); };
-// async (
-//     req: Request,
-//     res: Response,
-//     next: NextFunction
-//   ) => {
-//     try {
-//       const errors = validationResult(req);
-//       if (!errors.isEmpty) {
-//         const error: any = new Error("Validation failed!");
-//         error.data = errors.array();
-//         error.statusCode = 422;
-//         throw error;
-//       }
-//     } catch (err) {
-//       if (!err.statusCode) {
-//         err.statusCode = 500;
-//       }
-//       next(err);
-//     }
-//   }
+exports.editProfile = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var errors, error, profileImage, error, user, error, result, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                errors = express_validator_1.validationResult(req);
+                if (!errors.isEmpty) {
+                    error = new Error("Validation failed!");
+                    error.data = errors.array();
+                    error.statusCode = 422;
+                    throw error;
+                }
+                profileImage = req.body.profileImage;
+                if (req.file) {
+                    profileImage = req.file.path.replace("\\", "/");
+                }
+                if (!profileImage) {
+                    error = new Error("No file picked.");
+                    error.statusCode = 422;
+                    throw error;
+                }
+                return [4 /*yield*/, User_1.default.findById(req.userId)];
+            case 1:
+                user = _a.sent();
+                if (!user) {
+                    error = new Error("User not found!");
+                    error.statusCode = 404;
+                    throw error;
+                }
+                if (user.profileImage && user.profileImage != profileImage) {
+                    utils_1.deleteFile(user.profileImage);
+                }
+                user.profileImage = profileImage;
+                user.username = req.body.username;
+                return [4 /*yield*/, user.save()];
+            case 2:
+                result = _a.sent();
+                res.json({ message: "Profile updated successfully!", data: result });
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _a.sent();
+                if (!err_2.statusCode) {
+                    err_2.statusCode = 500;
+                }
+                next(err_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.login = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var errors, error, user, error, isEqual, error, token, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                errors = express_validator_1.validationResult(req);
+                if (!errors.isEmpty) {
+                    error = new Error("Validation failed!");
+                    error.data = errors.array();
+                    error.statusCode = 422;
+                    throw error;
+                }
+                return [4 /*yield*/, User_1.default.findOne({ email: req.body.email })];
+            case 1:
+                user = _a.sent();
+                if (!user) {
+                    error = new Error("User with this email does not exist!");
+                    error.statusCode = 404;
+                    throw error;
+                }
+                return [4 /*yield*/, bcrypt_1.default.compare(req.body.password, user.password)];
+            case 2:
+                isEqual = _a.sent();
+                if (!isEqual) {
+                    error = new Error("Password is incorrect!");
+                    error.statusCode = 401;
+                    throw error;
+                }
+                token = jsonwebtoken_1.default.sign({ userId: user._id }, process.env.SECRET || "secret", {
+                    expiresIn: "1d",
+                });
+                res.json({
+                    id: user._id,
+                    username: user.username,
+                    token: token,
+                    message: "Login successful!",
+                    profileImage: user.profileImage,
+                });
+                return [3 /*break*/, 4];
+            case 3:
+                err_3 = _a.sent();
+                if (!err_3.statusCode) {
+                    err_3.statusCode = 500;
+                }
+                next(err_3);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 //# sourceMappingURL=AuthController.js.map

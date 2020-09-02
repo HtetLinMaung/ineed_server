@@ -1,7 +1,8 @@
 import express from "express";
-import { editProfile, signup } from "../controllers/AuthController";
+import { editProfile, login, signup } from "../controllers/AuthController";
 import { body } from "express-validator";
 import User from "../models/User";
+import isAuth from "../middlewares/is-auth";
 const router = express.Router();
 
 router.put(
@@ -26,8 +27,22 @@ router.put(
 
 router.put(
   "/edit-profile",
+  isAuth,
   [body("username").notEmpty().withMessage("Username must not be empty!")],
   editProfile
+);
+
+router.post(
+  "/login",
+  [
+    body("email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("Invalid email!"),
+    body("password").notEmpty().withMessage("Password must not be empty!"),
+  ],
+  login
 );
 
 export default router;

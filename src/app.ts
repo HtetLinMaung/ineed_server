@@ -2,7 +2,7 @@ import express, { Request } from "express";
 import mongoose from "mongoose";
 import path from "path";
 import multer, { FileFilterCallback } from "multer";
-import uuid from "uuid";
+import { v4 } from "uuid";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -20,7 +20,7 @@ const fileStorage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (_req, file, cb) => {
-    cb(null, `${uuid.v4()}_${file.originalname}`);
+    cb(null, `${v4()}_${file.originalname}`);
   },
 });
 

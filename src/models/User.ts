@@ -2,7 +2,10 @@ import { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
-    username: String,
+    username: {
+      type: String,
+      default: "",
+    },
     email: {
       type: String,
       required: true,
@@ -11,7 +14,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    profileImage: String,
+    profileImage: {
+      type: String,
+      default: "",
+    },
     needs: [
       {
         type: Schema.Types.ObjectId,
