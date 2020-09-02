@@ -72,7 +72,7 @@ exports.signup = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 token = jsonwebtoken_1.default.sign({ userId: user._id }, process.env.SECRET || "secret", {
                     expiresIn: "1d",
                 });
-                res.json({ message: "User created successfully", token: token });
+                res.json({ message: "User created successfully", token: token, status: 1 });
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
@@ -123,7 +123,11 @@ exports.editProfile = function (req, res, next) { return __awaiter(void 0, void 
                 return [4 /*yield*/, user.save()];
             case 2:
                 result = _a.sent();
-                res.json({ message: "Profile updated successfully!", data: result });
+                res.json({
+                    message: "Profile updated successfully!",
+                    data: result,
+                    status: 1,
+                });
                 return [3 /*break*/, 4];
             case 3:
                 err_2 = _a.sent();
@@ -174,6 +178,7 @@ exports.login = function (req, res, next) { return __awaiter(void 0, void 0, voi
                     token: token,
                     message: "Login successful!",
                     profileImage: user.profileImage,
+                    status: 1,
                 });
                 return [3 /*break*/, 4];
             case 3:

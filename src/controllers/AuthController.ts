@@ -33,7 +33,7 @@ export const signup = async (
         expiresIn: "1d",
       }
     );
-    res.json({ message: "User created successfully", token });
+    res.json({ message: "User created successfully", token, status: 1 });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -76,7 +76,11 @@ export const editProfile = async (
     user.profileImage = profileImage;
     user.username = req.body.username;
     const result = await user.save();
-    res.json({ message: "Profile updated successfully!", data: result });
+    res.json({
+      message: "Profile updated successfully!",
+      data: result,
+      status: 1,
+    });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -123,6 +127,7 @@ export const login = async (
       token,
       message: "Login successful!",
       profileImage: user.profileImage,
+      status: 1,
     });
   } catch (err) {
     if (!err.statusCode) {
