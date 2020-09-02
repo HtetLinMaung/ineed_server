@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 export const signup = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const errors = validationResult(req);
@@ -30,7 +30,7 @@ export const signup = async (
       process.env.SECRET || "secret",
       {
         expiresIn: "1d",
-      }
+      },
     );
     res.json({ message: "User created successfully", data: result, token });
   } catch (err) {
@@ -44,13 +44,22 @@ export const signup = async (
 export const editProfile = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty) {
       const error: any = new Error("Validation failed!");
       error.data = errors.array();
+      error.statusCode = 422;
+      throw error;
+    }
+    let profileImage: string = req.body.profileImage;
+    if (req.file) {
+      profileImage = req.file.path.replace("\\", "/");
+    }
+    if (!profileImage) {
+      const error: any = new Error("No file picked.");
       error.statusCode = 422;
       throw error;
     }

@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Request } from "express";
 import mongoose from "mongoose";
 import path from "path";
-import multer from "multer";
+import multer, { FileFilterCallback } from "multer";
 import uuid from "uuid";
 import dotenv from "dotenv";
 dotenv.config();
@@ -24,7 +24,7 @@ const fileStorage = multer.diskStorage({
   },
 });
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (_req: Request, file: any, cb: FileFilterCallback) => {
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
@@ -38,7 +38,7 @@ const fileFilter = (req, file, cb) => {
 
 app.use(express.json());
 app.use(multer({ storage: fileStorage, fileFilter }).single("profileImage"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "images")));
 app.use("/api/auth/", auth_route);
 app.use(error);
 
