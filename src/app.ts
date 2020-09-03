@@ -40,7 +40,7 @@ const fileFilter = (_req: Request, file: any, cb: FileFilterCallback) => {
 
 app.use(express.json());
 app.use(multer({ storage: fileStorage, fileFilter }).single("profileImage"));
-app.use(express.static(path.join(rootDir, "images")));
+app.use("/images", express.static(path.join(rootDir, "images")));
 app.use("/api/auth/", auth_route);
 app.use(error);
 

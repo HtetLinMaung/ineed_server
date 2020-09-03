@@ -37,7 +37,7 @@ var fileFilter = function (_req, file, cb) {
 };
 app.use(express_1.default.json());
 app.use(multer_1.default({ storage: fileStorage, fileFilter: fileFilter }).single("profileImage"));
-app.use(express_1.default.static(path_1.default.join(utils_1.rootDir, "images")));
+app.use("/images", express_1.default.static(path_1.default.join(utils_1.rootDir, "images")));
 app.use("/api/auth/", auth_route_1.default);
 app.use(error_1.default);
 mongoose_1.default
