@@ -52,7 +52,8 @@ exports.signup = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 0:
                 _a.trys.push([0, 3, , 4]);
                 errors = express_validator_1.validationResult(req);
-                if (!errors.isEmpty) {
+                if (!errors.isEmpty()) {
+                    console.log("isError");
                     error = new Error("Validation failed!");
                     error.data = errors.array();
                     error.statusCode = 422;
@@ -92,7 +93,7 @@ exports.editProfile = function (req, res, next) { return __awaiter(void 0, void 
             case 0:
                 _a.trys.push([0, 3, , 4]);
                 errors = express_validator_1.validationResult(req);
-                if (!errors.isEmpty) {
+                if (!errors.isEmpty()) {
                     error = new Error("Validation failed!");
                     error.data = errors.array();
                     error.statusCode = 422;
@@ -147,7 +148,7 @@ exports.login = function (req, res, next) { return __awaiter(void 0, void 0, voi
             case 0:
                 _a.trys.push([0, 3, , 4]);
                 errors = express_validator_1.validationResult(req);
-                if (!errors.isEmpty) {
+                if (!errors.isEmpty()) {
                     error = new Error("Validation failed!");
                     error.data = errors.array();
                     error.statusCode = 422;

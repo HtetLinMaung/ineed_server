@@ -13,7 +13,8 @@ export const signup = async (
 ) => {
   try {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
+      console.log("isError");
       const error: any = new Error("Validation failed!");
       error.data = errors.array();
       error.statusCode = 422;
@@ -49,7 +50,7 @@ export const editProfile = async (
 ) => {
   try {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       const error: any = new Error("Validation failed!");
       error.data = errors.array();
       error.statusCode = 422;
@@ -96,7 +97,7 @@ export const login = async (
 ) => {
   try {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       const error: any = new Error("Validation failed!");
       error.data = errors.array();
       error.statusCode = 422;
