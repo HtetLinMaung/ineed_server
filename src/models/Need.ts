@@ -33,7 +33,7 @@ const needSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default model("need", needSchema);

@@ -1169,6 +1169,11 @@ mongoose-legacy-pluralize@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
 
+mongoose-softdelete@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/mongoose-softdelete/-/mongoose-softdelete-1.2.0.tgz#5ba994835acf27b701cb4e2138355c680caecfd1"
+  integrity sha512-TGwsps80JHwK8+YAoKyGn/mwf4QppW8NR25AZK1Bcy4C/oa6YbuNLF10AZfW1psH30bqVyyA5BNS6sGCw2TZIA==
+
 mongoose@^5.10.2:
   version "5.10.2"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.10.2.tgz#3a6770affa8c05c4198515616fd555a5c9bc74d6"

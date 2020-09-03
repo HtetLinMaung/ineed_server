@@ -11,6 +11,7 @@ import error from "./middlewares/error";
 
 // routes
 import auth_route from "./routes/auth_route";
+import need_route from "./routes/need_route";
 
 import { rootDir } from "./utils";
 
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use(multer({ storage: fileStorage, fileFilter }).single("profileImage"));
 app.use("/images", express.static(path.join(rootDir, "images")));
 app.use("/api/auth/", auth_route);
+app.use("/api/needs/", need_route);
 app.use(error);
 
 mongoose
