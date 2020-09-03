@@ -12,6 +12,8 @@ import error from "./middlewares/error";
 // routes
 import auth_route from "./routes/auth_route";
 
+import { rootDir } from "./utils";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -38,7 +40,7 @@ const fileFilter = (_req: Request, file: any, cb: FileFilterCallback) => {
 
 app.use(express.json());
 app.use(multer({ storage: fileStorage, fileFilter }).single("profileImage"));
-app.use(express.static(path.join(__dirname, "images")));
+app.use(express.static(path.join(rootDir, "images")));
 app.use("/api/auth/", auth_route);
 app.use(error);
 

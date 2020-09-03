@@ -14,6 +14,7 @@ dotenv_1.default.config();
 var error_1 = __importDefault(require("./middlewares/error"));
 // routes
 var auth_route_1 = __importDefault(require("./routes/auth_route"));
+var utils_1 = require("./utils");
 var app = express_1.default();
 var PORT = process.env.PORT || 3000;
 var fileStorage = multer_1.default.diskStorage({
@@ -36,7 +37,7 @@ var fileFilter = function (_req, file, cb) {
 };
 app.use(express_1.default.json());
 app.use(multer_1.default({ storage: fileStorage, fileFilter: fileFilter }).single("profileImage"));
-app.use(express_1.default.static(path_1.default.join(__dirname, "images")));
+app.use(express_1.default.static(path_1.default.join(utils_1.rootDir, "images")));
 app.use("/api/auth/", auth_route_1.default);
 app.use(error_1.default);
 mongoose_1.default
