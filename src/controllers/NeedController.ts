@@ -143,7 +143,7 @@ export const removeNeed = async (
     const user: any = await User.findById(req.userId);
     user.needs.pull(req.params.id);
     await user.save();
-    res.status(204).json({ message: "Deleted Successfully!", status: 1 });
+    res.sendStatus(204);
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
