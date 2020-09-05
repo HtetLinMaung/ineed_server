@@ -44,6 +44,7 @@ mongoose_1.default
     .connect(process.env.DATABASE || "", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
 })
     .then(function () {
     var server = app.listen(PORT, function () { return console.log("Server listening on PORT " + PORT); });

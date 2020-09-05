@@ -48,6 +48,7 @@ mongoose
   .connect(process.env.DATABASE || "", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => {
     const server = app.listen(
