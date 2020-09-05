@@ -43,9 +43,6 @@ const fileFilter = (_req: Request, file: any, cb: FileFilterCallback) => {
 app.use(express.json());
 app.use(multer({ storage: fileStorage, fileFilter }).single("profileImage"));
 app.use("/images", express.static(path.join(rootDir, "images")));
-app.use("/api/auth/", auth_route);
-app.use("/api/needs/", need_route);
-app.use(error);
 
 mongoose
   .connect(process.env.DATABASE || "", {
@@ -61,5 +58,8 @@ mongoose
     io.on("connection", (socket: any) => {
       console.log(socket);
     });
+    app.use("/api/auth/", auth_route);
+    app.use("/api/needs/", need_route);
+    app.use(error);
   })
   .catch((err) => console.log(err));

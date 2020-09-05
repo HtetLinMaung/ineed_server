@@ -43,6 +43,7 @@ exports.removeNeed = exports.updateNeed = exports.createNeed = exports.findNeed 
 var express_validator_1 = require("express-validator");
 var Need_1 = __importDefault(require("../models/Need"));
 var User_1 = __importDefault(require("../models/User"));
+var socket_1 = __importDefault(require("../socket"));
 exports.findNeeds = function (_req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var needs, err_1;
     return __generator(this, function (_a) {
@@ -94,11 +95,12 @@ exports.findNeed = function (req, res, next) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.createNeed = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var errors, error, needDto, need, result, user, err_3;
+    var io, errors, error, needDto, need, result, user, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 4, , 5]);
+                io = socket_1.default.getIO();
                 errors = express_validator_1.validationResult(req);
                 if (!errors.isEmpty()) {
                     error = new Error("Validation failed!");
@@ -123,6 +125,7 @@ exports.createNeed = function (req, res, next) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, (user === null || user === void 0 ? void 0 : user.save())];
             case 3:
                 _a.sent();
+                io.emit("needs");
                 res.status(201).json({ message: "Created Successfully!", data: result, status: 1 });
                 return [3 /*break*/, 5];
             case 4:
@@ -137,11 +140,12 @@ exports.createNeed = function (req, res, next) { return __awaiter(void 0, void 0
     });
 }); };
 exports.updateNeed = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var errors, error, need, error, error, result, err_4;
+    var io, errors, error, need, error, error, result, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
+                io = socket_1.default.getIO();
                 errors = express_validator_1.validationResult(req);
                 if (!errors.isEmpty()) {
                     error = new Error("Validation failed!");
@@ -169,6 +173,7 @@ exports.updateNeed = function (req, res, next) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, need.save()];
             case 2:
                 result = _a.sent();
+                io.emit("needs");
                 res.json({ message: "Updated Successfully!", data: result, status: 1 });
                 return [3 /*break*/, 4];
             case 3:
@@ -183,11 +188,12 @@ exports.updateNeed = function (req, res, next) { return __awaiter(void 0, void 0
     });
 }); };
 exports.removeNeed = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var errors, error, need, error, error, user, err_5;
+    var io, errors, error, need, error, error, user, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 5, , 6]);
+                io = socket_1.default.getIO();
                 errors = express_validator_1.validationResult(req);
                 if (!errors.isEmpty()) {
                     error = new Error("Validation failed!");
@@ -218,6 +224,7 @@ exports.removeNeed = function (req, res, next) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, user.save()];
             case 4:
                 _a.sent();
+                io.emit("needs");
                 res.sendStatus(204);
                 return [3 /*break*/, 6];
             case 5:

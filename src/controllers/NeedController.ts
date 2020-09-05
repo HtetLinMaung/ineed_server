@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import { INeedCreate } from "../interfaces/INeed";
 import Need from "../models/Need";
 import User from "../models/User";
+import socket from "../socket";
 
 export const findNeeds = async (
   _req: Request,
@@ -48,6 +49,7 @@ export const createNeed = async (
   next: NextFunction,
 ) => {
   try {
+    const io = socket.getIO();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error: any = new Error("Validation failed!");
@@ -66,6 +68,7 @@ export const createNeed = async (
     const user: any = await User.findById(req.userId);
     user?.needs.push(need);
     await user?.save();
+    io.emit("needs");
     res.status(201).json(
       { message: "Created Successfully!", data: result, status: 1 },
     );
@@ -83,6 +86,7 @@ export const updateNeed = async (
   next: NextFunction,
 ) => {
   try {
+    const io = socket.getIO();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error: any = new Error("Validation failed!");
@@ -106,6 +110,7 @@ export const updateNeed = async (
     need.tags = req.body.tags;
     need.status = req.body.status ? "Satisfied" : "In progress";
     const result = await need.save();
+    io.emit("needs");
     res.json({ message: "Updated Successfully!", data: result, status: 1 });
   } catch (err) {
     if (!err.statusCode) {
@@ -121,6 +126,7 @@ export const removeNeed = async (
   next: NextFunction,
 ) => {
   try {
+    const io = socket.getIO();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error: any = new Error("Validation failed!");
@@ -143,6 +149,7 @@ export const removeNeed = async (
     const user: any = await User.findById(req.userId);
     user.needs.pull(req.params.id);
     await user.save();
+    io.emit("needs");
     res.sendStatus(204);
   } catch (err) {
     if (!err.statusCode) {
