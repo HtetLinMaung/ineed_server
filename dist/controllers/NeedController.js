@@ -218,7 +218,7 @@ exports.removeNeed = function (req, res, next) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, user.save()];
             case 4:
                 _a.sent();
-                res.status(204).json({ message: "Deleted Successfully!", status: 1 });
+                res.sendStatus(204);
                 return [3 /*break*/, 6];
             case 5:
                 err_5 = _a.sent();

@@ -8,6 +8,7 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var path_1 = __importDefault(require("path"));
 var multer_1 = __importDefault(require("multer"));
 var uuid_1 = require("uuid");
+var socket_1 = __importDefault(require("./socket"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 // middlewares
@@ -48,7 +49,11 @@ mongoose_1.default
     useUnifiedTopology: true,
 })
     .then(function () {
-    app.listen(PORT, function () { return console.log("Server listening on PORT " + PORT); });
+    var server = app.listen(PORT, function () { return console.log("Server listening on PORT " + PORT); });
+    var io = socket_1.default.init(server);
+    io.on("connection", function (socket) {
+        console.log(socket);
+    });
 })
     .catch(function (err) { return console.log(err); });
 //# sourceMappingURL=app.js.map

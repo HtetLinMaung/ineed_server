@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import path from "path";
 import multer, { FileFilterCallback } from "multer";
 import { v4 } from "uuid";
+import socket from "./socket";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -52,6 +53,13 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));
+    const server = app.listen(
+      PORT,
+      () => console.log(`Server listening on PORT ${PORT}`),
+    );
+    const io = socket.init(server);
+    io.on("connection", (socket: any) => {
+      console.log(socket);
+    });
   })
   .catch((err) => console.log(err));

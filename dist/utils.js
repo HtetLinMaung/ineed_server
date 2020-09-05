@@ -10,7 +10,7 @@ exports.rootDir = path_1.default.join(__dirname, "..");
 exports.deleteFile = function (fileName) {
     fs_1.default.unlink(path_1.default.join(exports.rootDir, fileName), function (err) {
         if (err)
-            throw err;
+            console.log(err);
     });
 };
 //# sourceMappingURL=utils.js.map
