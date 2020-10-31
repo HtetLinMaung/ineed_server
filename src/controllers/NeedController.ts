@@ -11,7 +11,9 @@ export const findNeeds = async (
   next: NextFunction
 ) => {
   try {
-    const needs = await Need.find().populate("user").sort({ createdAt: -1 });
+    const needs = await Need.find({}, { updatedAt: 0 })
+      .populate("user", "profileImage username")
+      .sort({ createdAt: -1 });
     res.json({ data: needs, status: 1 });
   } catch (err) {
     if (!err.statusCode) {
@@ -27,7 +29,10 @@ export const findNeed = async (
   next: NextFunction
 ) => {
   try {
-    const need = await Need.findById(req.params.id).populate("user");
+    const need = await Need.findOne(
+      { _id: req.params.id },
+      { updatedAt: 0 }
+    ).populate("user", "profileImage username");
 
     if (!need) {
       const error: any = new Error("Not Found!");

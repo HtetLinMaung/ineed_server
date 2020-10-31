@@ -50,7 +50,9 @@ exports.findNeeds = function (_req, res, next) { return __awaiter(void 0, void 0
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Need_1.default.find().populate("user").sort({ createdAt: -1 })];
+                return [4 /*yield*/, Need_1.default.find({}, { updatedAt: 0 })
+                        .populate("user", "profileImage username")
+                        .sort({ createdAt: -1 })];
             case 1:
                 needs = _a.sent();
                 res.json({ data: needs, status: 1 });
@@ -72,7 +74,7 @@ exports.findNeed = function (req, res, next) { return __awaiter(void 0, void 0, 
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Need_1.default.findById(req.params.id).populate("user")];
+                return [4 /*yield*/, Need_1.default.findOne({ _id: req.params.id }, { updatedAt: 0 }).populate("user", "profileImage username")];
             case 1:
                 need = _a.sent();
                 if (!need) {
