@@ -50,7 +50,7 @@ exports.findNeeds = function (_req, res, next) { return __awaiter(void 0, void 0
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Need_1.default.find().populate("user")];
+                return [4 /*yield*/, Need_1.default.find().populate("user").sort({ createdAt: -1 })];
             case 1:
                 needs = _a.sent();
                 res.json({ data: needs, status: 1 });
@@ -72,8 +72,7 @@ exports.findNeed = function (req, res, next) { return __awaiter(void 0, void 0, 
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Need_1.default.findById(req.params.id)
-                        .populate("user")];
+                return [4 /*yield*/, Need_1.default.findById(req.params.id).populate("user")];
             case 1:
                 need = _a.sent();
                 if (!need) {
@@ -126,7 +125,9 @@ exports.createNeed = function (req, res, next) { return __awaiter(void 0, void 0
             case 3:
                 _a.sent();
                 io.emit("needs");
-                res.status(201).json({ message: "Created Successfully!", data: result, status: 1 });
+                res
+                    .status(201)
+                    .json({ message: "Created Successfully!", data: result, status: 1 });
                 return [3 /*break*/, 5];
             case 4:
                 err_3 = _a.sent();

@@ -1,5 +1,5 @@
-import socketIO from "socket.io";
-let io: any;
+import socketIO, { Server } from "socket.io";
+let io: Server;
 
 export default {
   init(httpServer: any) {

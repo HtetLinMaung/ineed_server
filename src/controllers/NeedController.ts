@@ -8,10 +8,10 @@ import socket from "../socket";
 export const findNeeds = async (
   _req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
-    const needs = await Need.find().populate("user");
+    const needs = await Need.find().populate("user").sort({ createdAt: -1 });
     res.json({ data: needs, status: 1 });
   } catch (err) {
     if (!err.statusCode) {
@@ -24,11 +24,11 @@ export const findNeeds = async (
 export const findNeed = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
-    const need = await Need.findById(req.params.id)
-      .populate("user");
+    const need = await Need.findById(req.params.id).populate("user");
+
     if (!need) {
       const error: any = new Error("Not Found!");
       error.statusCode = 404;
@@ -46,7 +46,7 @@ export const findNeed = async (
 export const createNeed = async (
   req: any,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const io = socket.getIO();
@@ -69,9 +69,9 @@ export const createNeed = async (
     user?.needs.push(need);
     await user?.save();
     io.emit("needs");
-    res.status(201).json(
-      { message: "Created Successfully!", data: result, status: 1 },
-    );
+    res
+      .status(201)
+      .json({ message: "Created Successfully!", data: result, status: 1 });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -83,7 +83,7 @@ export const createNeed = async (
 export const updateNeed = async (
   req: any,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const io = socket.getIO();
@@ -123,7 +123,7 @@ export const updateNeed = async (
 export const removeNeed = async (
   req: any,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const io = socket.getIO();
